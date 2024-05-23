@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+	echo "Usage: $0 <fqdn>" >&2
+	echo "Example: $0 app.example.com" >&2
+	exit 1
+fi
+
+set -e
+
+cp owndyndns.sh /usr/bin
+owndyndns.sh setup "$1"
+echo "Installed successfully"

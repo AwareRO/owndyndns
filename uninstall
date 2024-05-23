@@ -1,0 +1,4 @@
+#!/bin/bash
+
+rm -f /etc/cron.d/owndyndns /usr/bin/owndyndns.sh
+echo "Uninstalled successfully"
