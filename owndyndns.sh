@@ -59,17 +59,15 @@ add_dynamic_dns_entry(){
 	add_aware "$1"
 }
 
-add_and_cron(){
-	mkdir -p "${TMPDIR}"
-	touch "${TMPDIR}"/{old,new}
-	add_dynamic_dns_entry "$1"
-	echo "*/5 * * * * root $(realpath $0) iteration $1" > /etc/cron.d/owndyndns
-}
-
 cron(){
 	mkdir -p "${TMPDIR}"
 	touch "${TMPDIR}"/{old,new}
 	echo "*/5 * * * * root $(realpath $0) iteration $1" > /etc/cron.d/owndyndns
+}
+
+add_and_cron(){
+	add_dynamic_dns_entry "$1"
+	cron "$1"
 }
 
 case "$1" in
