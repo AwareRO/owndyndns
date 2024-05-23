@@ -9,9 +9,18 @@ log(){
 	echo "$(date +'%Y/%m/%d %H:%M:%S'):: $1" >> "${TMPDIR}"/owndyndns.log
 }
 
+getver() {
+	local v="$(dpkg-query -f '${Version}' -W "$1")"
+	if [ -z "$v" ]; then
+		echo "unknown"
+	else
+		echo "$v"
+	fi
+}
+
 get_user_agent(){
 	local owndyndns_package="owndyndns"
-	echo "$owndyndns_package/$(dpkg-query -f '${Version}' -W $owndyndns_package)"
+	echo "$owndyndns_package/$(getver $owndyndns_package)"
 }
 
 get_public_ip(){
@@ -27,19 +36,27 @@ get_key(){
 	cat $OWNDNSKEY
 }
 
+chip_aware() {
+	curl -A "$(get_user_agent)" "$OWNDNS/$(get_key)/chip/$1/$(cat "${TMPDIR}/new")/"
+}
+
+add_aware() {
+	curl -A "$(get_user_agent)" "$OWNDNS/$(get_key)/add/$1/A/$(cat "${TMPDIR}/old")/"
+}
+
 dynamic_dns_iteration(){
 	touch "${TMPDIR}/old"
 	if ! get_public_ip | tee "${TMPDIR}/new" | diff "${TMPDIR}/old" - ; then
 		log "IP changed old: $(cat "${TMPDIR}/old") new: $(cat "${TMPDIR}/new")"
 		cat "${TMPDIR}/new" > "${TMPDIR}/old"
-		curl -A "$(get_user_agent)" "$OWNDNS/$(get_key)/chip/$1/$(cat "${TMPDIR}/new")/"
+		chip_aware "$1"
 	fi
 }
 
 add_dynamic_dns_entry(){
 	local ip="$(get_public_ip)"
 	echo "$ip" > "${TMPDIR}/old"
-	curl -A "$(get_user_agent)" "$OWNDNS/$(get_key)/add/$1/A/$(cat "${TMPDIR}/old")/"
+	add_aware "$1"
 }
 
 add_and_cron(){
