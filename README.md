@@ -14,3 +14,6 @@ cd owndyndns
 ./install
 ```
 * If you need to uninstall the software inside the repo dir run `./uninstall`
+
+# ipecho
+Public IP is obtained using a remote http service. Implementation here: https://github.com/AwareRO/ipecho
