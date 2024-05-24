@@ -6,6 +6,7 @@ Dynamic DNS client solution intended to be used with Aware Soft DNS API. If you 
 * Copy the key into `/etc/owndns.key`
 * Clone the repo, change dir into it and run `./install`
 ```
+echo $API_KEY > /etc/owndns.key
 git clone https://github.com/AwareRO/owndyndns.git
 cd owndyndns
 ./install
