@@ -1,3 +1,6 @@
+# Dynamic DNS Client Solution
+If you're here looking for a GENERIC Dynamic DNS Client then check this out instead: https://github.com/bmatei/gddnsc
+
 # owndyndns
 Dynamic DNS client solution intended to be used with Aware Soft DNS API. If you don't have an API key you can't use this as is. If you're interested for more details shoot us an email at contact@aware.ro.
 
